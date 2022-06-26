@@ -2,23 +2,31 @@ import MenuIcon from '@mui/icons-material/Menu'
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
-import { VenueModel } from '../../model/venue'
-import { useSidePanel } from '../../state/store/store'
+import { useSidePanel, useVenue } from '../../state/store/store'
 import Menu from './Menu'
 
 interface NavbarProps {
-  venue?: VenueModel
   title?: string
 }
 
 const Navbar = (props: NavbarProps) => {
   const router = useRouter()
-  const { venue, title } = props
-  const navbarTitle = venue ? venue.name : title
+  const { title } = props
+  const venue = useVenue((state) => state.venue)
   const openSidePanel = useSidePanel((state) => state.openSidePanel)
 
+  const navbarTitle = () => {
+    if (router.pathname === '/venue/[venueSlug]') {
+      return venue ? venue.name : ''
+    }
+
+    return title || ''
+  }
+
   const logoClickHandler = () => {
-    venue && router.push('/venue/' + venue.slug)
+    if (router.pathname === '/venue/[venueSlug]') {
+      venue && router.push('/venue/' + venue.slug)
+    }
   }
 
   return (
@@ -68,7 +76,7 @@ const Navbar = (props: NavbarProps) => {
             }}
             onClick={logoClickHandler}
           >
-            {navbarTitle}
+            {navbarTitle()}
           </Typography>
         )}
       </Toolbar>

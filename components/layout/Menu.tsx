@@ -10,7 +10,7 @@ const Menu = () => {
     return null
   }
 
-  const { name, slug, logo, location, phone } = venue
+  const { name, slug, logo, location, locationLink, phone } = venue
 
   return (
     <Container
@@ -37,7 +37,7 @@ const Menu = () => {
           variant="body2"
           target="_blank"
           underline="hover"
-          // href={companyAddressUrl}
+          href={locationLink || ''}
         >
           {location}
         </MuiLink>
