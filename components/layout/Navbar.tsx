@@ -3,6 +3,7 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { VenueModel } from '../../model/venue'
+import { useSidePanel } from '../../state/store/store'
 
 interface NavbarProps {
   venue?: VenueModel
@@ -13,6 +14,7 @@ const Navbar = (props: NavbarProps) => {
   const router = useRouter()
   const { venue, title } = props
   const navbarTitle = venue ? venue.name : title
+  const openSidePanel = useSidePanel((state) => state.openSidePanel)
 
   const logoClickHandler = () => {
     venue && router.push('/venue/' + venue.slug)
@@ -23,7 +25,18 @@ const Navbar = (props: NavbarProps) => {
       <Toolbar>
         <Box flex={0.1}>
           {venue ? (
-            <IconButton color="inherit" sx={{ padding: 0 }} onClick={() => {}}>
+            <IconButton
+              color="inherit"
+              sx={{ padding: 0 }}
+              onClick={() =>
+                openSidePanel({
+                  children: <></>,
+                  showCloseIcon: true,
+                  anchor: 'left',
+                  open: true,
+                })
+              }
+            >
               <MenuIcon />
             </IconButton>
           ) : (
