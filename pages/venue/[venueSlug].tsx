@@ -1,51 +1,54 @@
-import { GetServerSideProps, GetStaticPaths, GetStaticProps, NextPage } from "next"
-import Link from "next/link"
-import { useRouter } from "next/router"
-import { categoryApi, venueApi } from "../../lib/api"
+import { Container } from '@mui/material'
+import { GetServerSideProps, NextPage } from 'next'
+import Navbar from '../../components/layout/Navbar'
+import { categoryApi, venueApi } from '../../lib/api'
+import { CategoryModel } from '../../model/category'
+import { VenueModel } from '../../model/venue'
 
-const Venue: NextPage<{ venue: any, categories: any[] }> = (props) => {
-  const router = useRouter()
-  const { venueSlug } = router.query
-  return <>
-    <p>{venueSlug}</p>
-    <Link href="/">Home page</Link>
-    <pre>{JSON.stringify(props.venue, undefined, 2)}</pre>
-    <pre>{JSON.stringify(props.categories, undefined, 2)}</pre>
-  </>
+const Venue: NextPage = (props: {
+  venue?: VenueModel
+  categories?: CategoryModel[]
+}) => {
+  const { venue, categories } = props
+
+  if (!venue || !categories) {
+    return null
+  }
+
+  return (
+    <>
+      <Navbar venue={venue} />
+      <Container maxWidth="xl">
+        <pre>{venue && JSON.stringify(venue, undefined, 2)}</pre>
+        <pre>{categories && JSON.stringify(categories, undefined, 2)}</pre>
+      </Container>
+    </>
+  )
 }
 
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   return {
-//     props: {}
-//   }
-// }
+export const getServerSideProps: GetServerSideProps<{
+  venue?: VenueModel
+  categories?: CategoryModel[]
+}> = async (context) => {
+  let venue: VenueModel | undefined
+  let categories: CategoryModel[] | undefined
+  const { venueSlug } = context.params as { venueSlug: string }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const venues = await venueApi.searchVenue({})
-  console.log("venue", venues)
-
-  const paths = venues.map((venue: { slug: string }) => ({
-    params: { venueSlug: venue.slug }
-  }))
-
-  return { paths, fallback: false }
-}
-
-export const getStaticProps: GetStaticProps<{ venue: any, categories: any[] }, { venueSlug: string }> = async (context) => {
-  let venues: any[] = []
-  let categories: any[] = []
-
-  if (context.params) {
-    const { venueSlug } = context.params
-    venues = await venueApi.searchVenue({ venueSlug: venueSlug })
-    categories = await categoryApi.getCategoriesByVenueId(venues[0].id)
+  try {
+    const venuesData = await venueApi.searchVenue({ venueSlug: venueSlug })
+    if (venuesData.length > 0) {
+      venue = venuesData[0]
+      categories = await categoryApi.getCategoriesByVenueId(venuesData[0].id)
+    }
+  } catch (e) {
+    console.log(e)
   }
 
   return {
     props: {
-      venue: venues[0],
-      categories
-    }
+      venue,
+      categories,
+    },
   }
 }
 
