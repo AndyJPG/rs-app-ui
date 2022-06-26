@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app'
-import { ThemeContextProvider } from '../context/ThemeContextProvider'
+import { ThemeContextProvider } from '../state/context/ThemeContextProvider'
 import '../styles/globals.css'
 import { NextPageWithLayout } from '../model/nextTypes'
 
