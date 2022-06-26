@@ -1,5 +1,6 @@
 import create from 'zustand'
 import { SidePanelProps } from '../../model/globalComponents'
+import { VenueModel } from '../../model/venue'
 
 interface SidePanelState {
   sidePanelProps: SidePanelProps
@@ -14,9 +15,29 @@ export const useSidePanel = create<SidePanelState>((setState) => ({
     children: null,
   },
   openSidePanel: (props: SidePanelProps) =>
-    setState((state) => ({ sidePanelProps: props })),
+    setState(({ sidePanelProps }) => ({
+      sidePanelProps: {
+        ...props,
+        children: props.children || sidePanelProps.children,
+        anchor: props.anchor || sidePanelProps.anchor,
+        open: props.open !== undefined ? props.open : true,
+        paperProps: props.paperProps || sidePanelProps.paperProps,
+        transitionDuration:
+          props.transitionDuration || sidePanelProps.transitionDuration,
+      },
+    })),
   closeSidePanel: () =>
     setState((state) => ({
       sidePanelProps: { ...state.sidePanelProps, open: false },
     })),
+}))
+
+interface VenueState {
+  venue: VenueModel | null
+  setVenue: (venue: VenueModel | null) => void
+}
+
+export const useVenue = create<VenueState>((setState) => ({
+  venue: null,
+  setVenue: (venue) => setState((state) => ({ venue: venue })),
 }))

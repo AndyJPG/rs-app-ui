@@ -4,6 +4,7 @@ import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { VenueModel } from '../../model/venue'
 import { useSidePanel } from '../../state/store/store'
+import Menu from './Menu'
 
 interface NavbarProps {
   venue?: VenueModel
@@ -30,14 +31,13 @@ const Navbar = (props: NavbarProps) => {
               sx={{ padding: 0 }}
               onClick={() =>
                 openSidePanel({
-                  children: <></>,
+                  children: <Menu />,
                   showCloseIcon: true,
                   anchor: 'left',
-                  open: true,
                 })
               }
             >
-              <MenuIcon />
+              <MenuIcon fontSize="large" />
             </IconButton>
           ) : (
             <IconButton
@@ -57,6 +57,7 @@ const Navbar = (props: NavbarProps) => {
           <Typography
             variant="h6"
             sx={{
+              fontSize: '1.25rem',
               flexGrow: 1,
               color: 'inherit',
               textAlign: 'center',

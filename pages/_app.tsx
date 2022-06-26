@@ -11,12 +11,10 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
   return (
-    <>
+    <ThemeContextProvider>
       <SidePanel />
-      <ThemeContextProvider>
-        {getLayout(<Component {...pageProps} />)}
-      </ThemeContextProvider>
-    </>
+      {getLayout(<Component {...pageProps} />)}
+    </ThemeContextProvider>
   )
 }
 

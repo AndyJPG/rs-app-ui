@@ -29,7 +29,13 @@ export const SidePanel = () => {
       disableScrollLock={true}
     >
       {showCloseIcon && (
-        <Box sx={{ position: 'absolute', top: 0, right: '-3rem' }}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            right: '-3rem',
+          }}
+        >
           <IconButton
             color="primary"
             size="large"

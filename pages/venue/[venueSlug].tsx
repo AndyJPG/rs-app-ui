@@ -4,16 +4,20 @@ import Navbar from '../../components/layout/Navbar'
 import { categoryApi, venueApi } from '../../lib/api'
 import { CategoryModel } from '../../model/category'
 import { VenueModel } from '../../model/venue'
+import { useVenue } from '../../state/store/store'
 
 const Venue: NextPage = (props: {
   venue?: VenueModel
   categories?: CategoryModel[]
 }) => {
   const { venue, categories } = props
+  const setVenue = useVenue((state) => state.setVenue)
 
   if (!venue || !categories) {
     return null
   }
+
+  setVenue(venue)
 
   return (
     <>
