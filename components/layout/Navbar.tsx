@@ -12,28 +12,13 @@ interface NavbarProps {
 const Navbar = (props: NavbarProps) => {
   const router = useRouter()
   const { title } = props
-  const venue = useVenue((state) => state.venue)
   const openSidePanel = useSidePanel((state) => state.openSidePanel)
-
-  const navbarTitle = () => {
-    if (router.pathname === '/venue/[venueSlug]') {
-      return venue ? venue.name : ''
-    }
-
-    return title || ''
-  }
-
-  const logoClickHandler = () => {
-    if (router.pathname === '/venue/[venueSlug]') {
-      venue && router.push('/venue/' + venue.slug)
-    }
-  }
 
   return (
     <AppBar color="primary">
       <Toolbar>
         <Box flex={0.1}>
-          {venue ? (
+          {router.pathname === '/venue/[venueSlug]' ? (
             <IconButton
               color="inherit"
               sx={{ padding: 0 }}
@@ -61,11 +46,10 @@ const Navbar = (props: NavbarProps) => {
             </IconButton>
           )}
         </Box>
-        {navbarTitle && (
+        {title && (
           <Typography
             variant="h6"
             sx={{
-              fontSize: '1.25rem',
               flexGrow: 1,
               color: 'inherit',
               textAlign: 'center',
@@ -74,9 +58,8 @@ const Navbar = (props: NavbarProps) => {
               overflow: 'hidden',
               textOverflow: 'ellipsis',
             }}
-            onClick={logoClickHandler}
           >
-            {navbarTitle()}
+            {title}
           </Typography>
         )}
       </Toolbar>

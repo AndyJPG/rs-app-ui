@@ -1,7 +1,8 @@
-import { Container } from '@mui/material'
+import { Box, Container } from '@mui/material'
 import { GetServerSideProps, NextPage } from 'next'
 import { useEffect } from 'react'
 import Navbar from '../../components/layout/Navbar'
+import { NavToolbar } from '../../components/layout/NavToolbar'
 import { categoryApi, venueApi } from '../../lib/api'
 import { CategoryModel } from '../../model/category'
 import { VenueModel } from '../../model/venue'
@@ -38,10 +39,18 @@ const Venue: NextPage = (props: {
         padding: 0,
       }}
     >
-      <Navbar />
-      {/*<Box sx={{ position: "fixed", top: "3.5rem", left: 0, right: 0, zIndex: theme => theme.zIndex.appBar }}>*/}
-      {/*  <NavToolbar/>*/}
-      {/*</Box>*/}
+      <Navbar title={venue.name} />
+      <Box
+        sx={{
+          position: 'fixed',
+          top: '3.5rem',
+          left: 0,
+          right: 0,
+          zIndex: (theme) => theme.zIndex.appBar,
+        }}
+      >
+        <NavToolbar />
+      </Box>
       {/*<Box height="7rem"/>*/}
       {/*{searchResult ? searchResult.map((category: CategoryWithProducts) => (category.products.length > 0 &&*/}
       {/*    <ProductList key={category.name} products={category.products} title={category.name}/>*/}

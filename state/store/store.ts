@@ -41,3 +41,14 @@ export const useVenue = create<VenueState>((setState) => ({
   venue: null,
   setVenue: (venue) => setState((state) => ({ venue: venue })),
 }))
+
+interface ProductSearchState {
+  searchKeywords: string
+  setSearchKeywords: (keywords: string) => void
+}
+
+export const useProductSearch = create<ProductSearchState>((setState) => ({
+  searchKeywords: '',
+  setSearchKeywords: (keywords) =>
+    setState((state) => ({ searchKeywords: keywords })),
+}))
